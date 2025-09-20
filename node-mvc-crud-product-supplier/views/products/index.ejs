@@ -1,0 +1,47 @@
+<%- include("../partials/header", { title: "Products" }) %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Product List</h2>
+  <a href="/products/new" class="btn btn-primary">+ Add Product</a>
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Supplier</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (!products || products.length === 0) { %>
+      <tr>
+        <td colspan="6" class="text-center">No products yet.</td>
+      </tr>
+    <% } else { %>
+      <% products.forEach((p, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= p.name %></td>
+          <td><%= p.price %></td>
+          <td><%= p.quantity %></td>
+          <td><%= p.supplierId ? p.supplierId.name : "N/A" %></td>
+          <td class="d-flex gap-2">
+            <a href="/products/<%= p._id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+
+            <!-- Delete với method-override -->
+            <form action="/products/<%= p._id %>?_method=DELETE" method="POST" style="display:inline;">
+              <button type="submit" class="btn btn-danger btn-sm"
+                      onclick="return confirm('Delete this product?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
+
+<%- include("../partials/footer") %>
